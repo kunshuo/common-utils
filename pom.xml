@@ -7,9 +7,16 @@
     <version>1.0-SNAPSHOT</version>
     <name>common-utils</name>
     <url>http://maven.apache.org</url>
+
+    <build>
+        <finalName>common-utils</finalName>
+    </build>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <powermock.version>1.5.5</powermock.version>
+        <org.slf4j.version>1.7.7</org.slf4j.version>
+        <org.logback.version>1.1.3</org.logback.version>
     </properties>
 
     <dependencies>
@@ -60,8 +67,30 @@
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${org.logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${org.logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${org.slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>15.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
     </dependencies>
-    <build>
-        <finalName>jvm-demo</finalName>
-    </build>
 </project>
