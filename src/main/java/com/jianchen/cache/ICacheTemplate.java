@@ -6,7 +6,7 @@ package com.jianchen.cache;
 public interface ICacheTemplate<CacheClient> {
 
     /**
-     * 获取底层真正的缓存实现
+     * 获取底层真正的缓存实现,便于使用特定缓存的特性
      *
      * @return
      */
