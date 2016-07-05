@@ -13,6 +13,12 @@ public interface ICacheTemplate<CacheClient> {
     public CacheClient getClient();
 
     /**
+     * 获取内部的key值，如果是使用本接口提供的函数，不需要显示的调用这个函数，否则，需要显示的调用
+     */
+    public String getInnerKey(String key);
+
+
+    /**
      * 设置缓存值,使用默认的过期时间
      *
      * @param key
