@@ -1,12 +1,16 @@
 package com.jianchen.cache;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 //--------------------- Change Logs----------------------
 // <p>@author jian.cai Initial Created at 2016-07-04</p>
 //-------------------------------------------------------
 public abstract class AbstractCacheTemplate<CacheClient> implements ICacheTemplate<CacheClient>, InitializingBean {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final String CURR_TIME_STAMP = "" + System.currentTimeMillis();
 
@@ -29,8 +33,12 @@ public abstract class AbstractCacheTemplate<CacheClient> implements ICacheTempla
         this.prefix = prefix;
     }
 
-    public CacheClient getClient() {
+    public CacheClient getCacheClient() {
         return cacheClient;
+    }
+
+    public void setCacheClient(CacheClient cacheClient) {
+        this.cacheClient = cacheClient;
     }
 
     public String getInnerKey(String key) {
@@ -46,10 +54,6 @@ public abstract class AbstractCacheTemplate<CacheClient> implements ICacheTempla
         return set(key, value, 0);
     }
 
-    public <T> T get(String key) throws CacheException {
-        return get(key);
-    }
-
     public <T> boolean setWithoutException(String key, T value) {
         try {
             return set(key, value, 0);
@@ -58,24 +62,30 @@ public abstract class AbstractCacheTemplate<CacheClient> implements ICacheTempla
         }
     }
 
-    public <T> T getWithoutException(String key) {
-        return null;
-    }
-
     public <T> T getWithDefaultNull(String key) {
-        return null;
+        return getWithDefault(key,null);
     }
 
     public <T> T getWithDefault(String key, T defaultValue) {
-        return null;
-    }
-
-    public boolean delete(String key) throws CacheException {
-        return false;
+        try {
+            return (T) get(key);
+        } catch (CacheException e) {
+            logger.error(getErrmsg(e, key), e);
+            return defaultValue;
+        }
     }
 
     public boolean deleteWithoutException(String key) {
-        return false;
+        try {
+            return delete(key);
+        } catch (CacheException e) {
+            logger.error(getErrmsg(e, key), e);
+            return false;
+        }
+    }
+
+    protected String getErrmsg(Exception e, String key) {
+        return String.format("cacheKey : %s, Exception : ", key, e.getMessage());
     }
 
     public void afterPropertiesSet() throws Exception {

@@ -10,7 +10,7 @@ public interface ICacheTemplate<CacheClient> {
      *
      * @return
      */
-    public CacheClient getClient();
+    public CacheClient getCacheClient();
 
     /**
      * 获取内部的key值，如果是使用本接口提供的函数，不需要显示的调用这个函数，否则，需要显示的调用
@@ -67,16 +67,6 @@ public interface ICacheTemplate<CacheClient> {
      * @param <T>
      * @return
      */
-    public <T> T getWithoutException(String key);
-
-    /**
-     * 获取缓存值,取不到默认返回null
-     *
-     * @param key
-     * @param <T>
-     * @return
-     * @throws CacheException
-     */
     public <T> T getWithDefaultNull(String key);
 
     /**
@@ -88,7 +78,6 @@ public interface ICacheTemplate<CacheClient> {
      * @throws CacheException
      */
     public <T> T getWithDefault(String key, T defaultValue);
-
 
     /**
      * 删除指定key
