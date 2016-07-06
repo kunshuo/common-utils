@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 //--------------------- Change Logs----------------------
 // <p>@author jian.cai Initial Created at 2016-07-04</p>
@@ -63,7 +64,7 @@ public abstract class AbstractCacheTemplate<CacheClient> implements ICacheTempla
     }
 
     public <T> T getWithDefaultNull(String key) {
-        return getWithDefault(key,null);
+        return getWithDefault(key, null);
     }
 
     public <T> T getWithDefault(String key, T defaultValue) {
@@ -84,11 +85,54 @@ public abstract class AbstractCacheTemplate<CacheClient> implements ICacheTempla
         }
     }
 
+    public long incr(String key) throws CacheException {
+        return incr(key, 1, 0);
+    }
+
+    public long incrWithoutException(String key) {
+        return incrWithoutException(key, 1, 0);
+    }
+
+    public long incrWithoutException(String key, long delta, long initValue) {
+        try {
+            return incr(key, delta, initValue);
+        } catch (CacheException e) {
+            logger.error(getErrmsg(e, key), e);
+            return Integer.MAX_VALUE;
+        }
+    }
+
+    public long decr(String key) throws CacheException {
+        return decr(key, 1, 0);
+    }
+
+    public long decrWithoutException(String key) {
+        return decrWithoutException(key, 1, 0);
+    }
+
+    public long decrWithoutException(String key, long delta, long initValue) {
+        try {
+            return decr(key, delta, initValue);
+        } catch (CacheException e) {
+            logger.error(getErrmsg(e, key), e);
+            return Integer.MIN_VALUE;
+        }
+    }
+
     protected String getErrmsg(Exception e, String key) {
         return String.format("cacheKey : %s, Exception : ", key, e.getMessage());
     }
 
     public void afterPropertiesSet() throws Exception {
 
+        Assert.notNull(cacheClient, "cacheClient must be specified");
+
+        logger = LoggerFactory.getLogger(getClass());
+
+        if (StringUtils.isBlank(this.prefix)) {
+            logger.info("[" + this.getClass().getSimpleName() + "]not use cache prefix");
+        } else {
+            logger.info("[" + this.getClass().getSimpleName() + "]use cache prefix : " + this.prefix);
+        }
     }
 }

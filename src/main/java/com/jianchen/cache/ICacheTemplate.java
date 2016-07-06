@@ -97,5 +97,81 @@ public interface ICacheTemplate<CacheClient> {
      */
     public boolean deleteWithoutException(String key);
 
+    /**
+     * 计数器,增加delta
+     *
+     * @param key
+     * @param delta
+     * @param initValue
+     * @return
+     * @throws CacheException
+     */
+    public long incr(String key, long delta, long initValue) throws CacheException;
+
+
+    /**
+     * 计数器增加1
+     *
+     * @param key
+     * @return
+     * @throws CacheException
+     */
+    public long incr(String key) throws CacheException;
+
+
+    /**
+     * 计数器减少delta
+     *
+     * @param key
+     * @param delta
+     * @param initValue
+     * @return
+     * @throws CacheException
+     */
+    public long decr(String key, long delta, long initValue) throws CacheException;
+
+
+    /**
+     * 计数器减少1
+     *
+     * @param key
+     * @return
+     * @throws CacheException
+     */
+    public long decr(String key) throws CacheException;
+
+    /**
+     * 如果调用缓存抛出异常，那么会返回Integer.MAX_VALUE
+     *
+     * @param key
+     * @return
+     */
+    public long incrWithoutException(String key);
+
+    /**
+     * 如果调用缓存抛出异常，那么会返回Integer.MAX_VALUE
+     *
+     * @param key
+     * @param delta
+     * @return
+     */
+    public long incrWithoutException(String key, long delta, long initValue);
+
+    /**
+     * 如果调用缓存抛出异常，那么会返回Integer.MIN_VALUE
+     *
+     * @param key
+     * @return
+     */
+    public long decrWithoutException(String key);
+
+    /**
+     * 如果调用缓存抛出异常，那么会返回Integer.MIN_VALUE
+     *
+     * @param key
+     * @param delta
+     * @return
+     */
+    public long decrWithoutException(String key, long delta, long initValue);
 
 }

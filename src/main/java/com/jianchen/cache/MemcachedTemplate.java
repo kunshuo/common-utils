@@ -34,4 +34,20 @@ public class MemcachedTemplate extends AbstractCacheTemplate<MemcachedClient> {
             throw new CacheException(e);
         }
     }
+
+    public long incr(String key, long delta, long initValue) throws CacheException {
+        try {
+            return this.getCacheClient().incr(key, delta, initValue);
+        } catch (Exception e) {
+            throw new CacheException(e);
+        }
+    }
+
+    public long decr(String key, long delta, long initValue) throws CacheException {
+        try {
+            return this.getCacheClient().decr(key, delta, initValue);
+        } catch (Exception e) {
+            throw new CacheException(e);
+        }
+    }
 }
